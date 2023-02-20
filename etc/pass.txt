@@ -1,0 +1,2 @@
+password for keystore: cakesoft123
+key alias: key
