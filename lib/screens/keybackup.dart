@@ -37,7 +37,7 @@ class _KeyBackupPage extends State<KeyBackup> {
                         child: Center(
                           child: Text(
                             currentUser.mnemonic != null
-                                ? currentUser.mnemonic
+                                ? currentUser.mnemonic!
                                 : 'Private Keys',
                             textAlign: TextAlign.center,
                             style: TextStyle(

@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/util/global.dart';
-import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/user.dart';
@@ -60,7 +60,7 @@ class _AccountPageState extends State<AccountPage> {
                           )
                         : Avatar(
                             image:
-                                CachedNetworkImageProvider(currentUser.photo),
+                                CachedNetworkImageProvider(currentUser.photo!),
                             radius: 40,
                             backgroundColor: Colors.white,
                             borderColor: Colors.grey.shade300,
@@ -73,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
                     const SizedBox(height: 5.0),
                     Text(
                       " ",
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],
                 ),
@@ -137,7 +137,7 @@ class SocialMedia extends StatelessWidget {
                             ),
                             onTap: () {
                               if (currentUser.facebook_link != null)
-                                _launchURL(currentUser.facebook_link);
+                                _launchURL(currentUser.facebook_link!);
                             },
                           ),
                           GestureDetector(
@@ -153,7 +153,7 @@ class SocialMedia extends StatelessWidget {
                             ),
                             onTap: () {
                               if (currentUser.twitter_link != null)
-                                _launchURL(currentUser.instagram_link);
+                                _launchURL(currentUser.instagram_link!);
                             },
                           ),
                           GestureDetector(
@@ -169,7 +169,7 @@ class SocialMedia extends StatelessWidget {
                             ),
                             onTap: () {
                               if (currentUser.instagram_link != null)
-                                _launchURL(currentUser.instagram_link);
+                                _launchURL(currentUser.instagram_link!);
                             },
                           ),
                           GestureDetector(
@@ -185,7 +185,7 @@ class SocialMedia extends StatelessWidget {
                             ),
                             onTap: () {
                               if (currentUser.linkedin_link != null)
-                                _launchURL(currentUser.linkedin_link);
+                                _launchURL(currentUser.linkedin_link!);
                             },
                           )
                         ],
@@ -221,7 +221,7 @@ class _UserInfoState extends State<UserInfo> {
   void copyToClipBoard(text) {
     if (text != null) {
       Clipboard.setData(ClipboardData(text: text));
-      Toast.show("Copied");
+      Fluttertoast.showToast(msg: "Copied");
     }
   }
 
@@ -263,7 +263,7 @@ class _UserInfoState extends State<UserInfo> {
                             subtitle: Text(
                                 widget.currentUser.walletAddress == null
                                     ? "-"
-                                    : widget.currentUser.walletAddress),
+                                    : widget.currentUser.walletAddress!),
                           ),
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(
@@ -272,7 +272,7 @@ class _UserInfoState extends State<UserInfo> {
                             title: Text("Country"),
                             subtitle: Text(widget.currentUser.country == null
                                 ? "-"
-                                : widget.currentUser.country),
+                                : widget.currentUser.country!),
                           ),
                           ListTile(
                             leading: Icon(Icons.email),
@@ -287,7 +287,7 @@ class _UserInfoState extends State<UserInfo> {
                             subtitle: Text(
                                 widget.currentUser.description == null
                                     ? "-"
-                                    : widget.currentUser.description),
+                                    : widget.currentUser.description!),
                           ),
                         ],
                       ),

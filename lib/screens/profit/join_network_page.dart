@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/screens/lock_wrapper.dart';
-import 'package:toast/toast.dart';
 
 import '../../model/profit.dart';
 import '../../model/user.dart';
@@ -43,22 +43,22 @@ class _JoinNetworkPageState extends State<JoinNetworkPage> {
     String organization = orgNameCT.text;
 
     if (name.isEmpty) {
-      Toast.show("Enter name");
+      Fluttertoast.showToast(msg: "Enter name");
       return;
     }
 
     if (phone.isEmpty) {
-      Toast.show("Enter phone number");
+      Fluttertoast.showToast(msg: "Enter phone number");
       return;
     }
 
     if (email.isEmpty) {
-      Toast.show("Enter email address");
+      Fluttertoast.showToast(msg: "Enter email address");
       return;
     }
 
     if (organization.isEmpty) {
-      Toast.show("Enter organization name");
+      Fluttertoast.showToast(msg: "Enter organization name");
       return;
     }
 
@@ -73,7 +73,7 @@ class _JoinNetworkPageState extends State<JoinNetworkPage> {
         id: "${random.nextInt(1000)}",
         profitName: name,
         userName: user.name,
-        userWalletAddress: user.walletAddress,
+        userWalletAddress: user.walletAddress ?? '-',
         email: email,
         phone: phone,
         organization: organization,
@@ -84,12 +84,12 @@ class _JoinNetworkPageState extends State<JoinNetworkPage> {
       setState(() {
         isLoading = false;
       });
-      Toast.show("Successfully added your Non Profit data");
+      Fluttertoast.showToast(msg: "Successfully added your Non Profit data");
     } else {
       setState(() {
         isLoading = false;
       });
-      Toast.show("Failed!");
+      Fluttertoast.showToast(msg: "Failed!");
     }
   }
 

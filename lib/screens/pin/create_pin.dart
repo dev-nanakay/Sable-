@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/screens/dashboard_page.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 import 'constants.dart';
 
@@ -52,7 +52,7 @@ class _CreatePinPageState extends State<CreatePin> {
         });
       }
       //  else {
-      //   Toast.show("Pin length should be ${PIN_LENGTH}");
+      //   Fluttertoast.showToast(msg: "Pin length should be ${PIN_LENGTH}");
       // }
     } else {
       if (pinAgain.length < PIN_LENGTH) {
@@ -72,7 +72,7 @@ class _CreatePinPageState extends State<CreatePin> {
       // Save pin and redirect to next page
       try {
         setLoading(true);
-        Toast.show("Pin confirmed");
+        Fluttertoast.showToast(msg: "Pin confirmed");
         await UserRepository().addPin(pin: pin);
 
         GlobalValue.setCurrentUser = (await UserRepository().getUser())!;
@@ -81,14 +81,14 @@ class _CreatePinPageState extends State<CreatePin> {
             MaterialPageRoute(
               builder: (context) => DashboardPage(),
             ),
-                (route) => false);
+            (route) => false);
       } catch (Exception) {
-        Toast.show("Error setting pin");
+        Fluttertoast.showToast(msg: "Error setting pin");
       } finally {
         setLoading(false);
       }
     } else {
-      Toast.show("Pin does not match. Please try again.");
+      Fluttertoast.showToast(msg: "Pin does not match. Please try again.");
       setState(() {
         // reset all
         // pin = "";
@@ -113,7 +113,6 @@ class _CreatePinPageState extends State<CreatePin> {
       }
     }
   }
-
 
   Future<bool> _onWillPop() async {
     // Instead of popping current page, go to enter pin if verifyPin is not true.
@@ -168,16 +167,16 @@ class _CreatePinPageState extends State<CreatePin> {
                           child: Card(
                             child: Center(
                                 child: Text(
-                                  verifyPin
-                                      ? PinConstants.starPrint(pinAgain)
-                                      : PinConstants.starPrint(pin),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 35,
-                                    color: Colors.black87,
-                                  ),
-                                )),
+                              verifyPin
+                                  ? PinConstants.starPrint(pinAgain)
+                                  : PinConstants.starPrint(pin),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 35,
+                                color: Colors.black87,
+                              ),
+                            )),
                           ),
                         ),
                         Container(
@@ -191,41 +190,41 @@ class _CreatePinPageState extends State<CreatePin> {
                                   String element = pinArray[index];
                                   return Container(
                                       child: MaterialButton(
-                                        textColor: Colors.black,
-                                        key: ValueKey(element),
-                                        onPressed: () {
-                                          element == '-1'
-                                              ? print('nothing')
-                                              : setState(() {
-                                            onTapNumber(element);
-                                          });
-                                        },
-                                        child: element == '-1'
-                                            ? Container(
-                                          child: MaterialButton(
-                                            onPressed: () {
-                                              removeLastDigit();
-                                            },
-                                            child: Icon(
-                                              Icons.backspace,
-                                              size: 24.0,
-                                              semanticLabel:
-                                              'Text to announce in accessibility modes',
+                                    textColor: Colors.black,
+                                    key: ValueKey(element),
+                                    onPressed: () {
+                                      element == '-1'
+                                          ? print('nothing')
+                                          : setState(() {
+                                              onTapNumber(element);
+                                            });
+                                    },
+                                    child: element == '-1'
+                                        ? Container(
+                                            child: MaterialButton(
+                                              onPressed: () {
+                                                removeLastDigit();
+                                              },
+                                              child: Icon(
+                                                Icons.backspace,
+                                                size: 24.0,
+                                                semanticLabel:
+                                                    'Text to announce in accessibility modes',
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                            : Container(
+                                          )
+                                        : Container(
                                             child: Text(element.toString(),
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 36,
                                                     fontWeight:
-                                                    FontWeight.bold))),
-                                      ));
+                                                        FontWeight.bold))),
+                                  ));
                                 },
                                 gridDelegate:
-                                new SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3))),
+                                    new SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3))),
 
                         // verifyPin
                         //     ? Container()
@@ -255,7 +254,7 @@ class _CreatePinPageState extends State<CreatePin> {
                         //                     verifyPin = true;
                         //                   });
                         //                 } else {
-                        //                   Toast.show(
+                        //                   Fluttertoast.showToast(msg:
                         //                       "Pin length should be ${PIN_LENGTH}",
                         //                       context);
                         //                 }
@@ -263,7 +262,7 @@ class _CreatePinPageState extends State<CreatePin> {
                         //                 //   // confirm pin and show error if necessary
                         //                 //   if (pin == pinAgain) {
                         //                 //     // Save pin and redirect to next page
-                        //                 //     Toast.show("Pin confirmed");
+                        //                 //     Fluttertoast.showToast(msg: "Pin confirmed");
                         //                 //     await userBloc.addPin(pin: pin);
 
                         //                 //   GlobalValue.setCurrentUser =
@@ -276,7 +275,7 @@ class _CreatePinPageState extends State<CreatePin> {
                         //                 //       ),
                         //                 //       (route) => false);
                         //                 // } else {
-                        //                 //   Toast.show(
+                        //                 //   Fluttertoast.showToast(msg:
                         //                 //       "Pin does not match. Please try again.",
                         //                 //       context);
                         //                 // }
@@ -313,7 +312,7 @@ class _CreatePinPageState extends State<CreatePin> {
                         //                 //             builder: (context) =>
                         //                 //                 DashboardPage()));
                         //                 //   } else {
-                        //                 //     Toast.show(
+                        //                 //     Fluttertoast.showToast(msg:
                         //                 //         "Pin does not match. Please try again.",
                         //                 //         context);
                         //                 //         setState(() {
@@ -365,12 +364,7 @@ class _CreatePinPageState extends State<CreatePin> {
                 ),
               ),
               LoadingScreen(
-                  inAsyncCall: isLoading,
-                  mesage: "Loading",
-                  dismissible: false
-              )
-            ]
-
-            )));
+                  inAsyncCall: isLoading, mesage: "Loading", dismissible: false)
+            ])));
   }
 }

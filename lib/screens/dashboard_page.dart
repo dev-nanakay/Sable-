@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/screens/account/edit_account_page.dart';
 import 'package:sac_wallet/screens/custom_drawer.dart';
@@ -6,7 +7,6 @@ import 'package:sac_wallet/screens/lock_wrapper.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/util/text_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:toast/toast.dart';
 
 import '../screens/login_page.dart';
 import '../widget/loading.dart';
@@ -33,7 +33,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> initPrivateKey() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString(
-        TextUtil.PRIVATE_KEY, GlobalValue.getCurrentUser.privateKey);
+        TextUtil.PRIVATE_KEY, GlobalValue.getCurrentUser.privateKey!);
   }
 
   Widget getPageFromIndex(int index) {
@@ -97,6 +97,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => EditAccountPage()));
+                      setState(() {});
                     },
                     icon: Icon(Icons.edit, color: Colors.white, size: 25),
                   ),
@@ -130,7 +131,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     setState(() {
                       isLoading = false;
                     });
-                    Toast.show("Failed!");
+                    Fluttertoast.showToast(msg: "Failed!");
                   }
                 } else {
                   setState(() {

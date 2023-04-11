@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -11,7 +12,6 @@ import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/model/user.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/util/pdf_util.dart';
-import 'package:toast/toast.dart';
 
 class WalletInfo extends StatefulWidget {
   @override
@@ -49,7 +49,7 @@ class _CreateWalletPageState extends State<WalletInfo> {
   void getDetails() {
     setState(() {
       mnemonicText = user!.mnemonic;
-      arrayWords = user!.mnemonic.split(' ');
+      arrayWords = user!.mnemonic!.split(' ');
       privateKey = user!.privateKey;
     });
   }
@@ -59,11 +59,11 @@ class _CreateWalletPageState extends State<WalletInfo> {
     // TODO:
     try {
       pw.Document pdf = PdfUtil.generatePDF(data!);
-     /*  await Printing.layoutPdf(
+      /*  await Printing.layoutPdf(
           onLayout: (PdfPageFormat format) async => pdf.save()); */
-      Toast.show("Generating PDF");
+      Fluttertoast.showToast(msg: "Generating PDF");
     } catch (Exception) {
-      Toast.show("Error occurred while generating PDF");
+      Fluttertoast.showToast(msg: "Error occurred while generating PDF");
     }
   }
 
@@ -85,7 +85,7 @@ class _CreateWalletPageState extends State<WalletInfo> {
           attachments: [tempPath]);
       await FlutterMailer.send(mailOptions);
     } catch (Exception) {
-      Toast.show("Error occurred while sharing");
+      Fluttertoast.showToast(msg: "Error occurred while sharing");
     }
   }
 

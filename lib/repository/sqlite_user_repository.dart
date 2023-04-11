@@ -143,7 +143,7 @@ class RepositoryServiceUser {
     return updateIncorrectAttempt(
         user,
         user.incorrectAttempts != null
-            ? (int.tryParse(user.incorrectAttempts) ?? 0) + 1
+            ? (int.tryParse(user.incorrectAttempts!) ?? 0) + 1
             : 1,
         time);
   }

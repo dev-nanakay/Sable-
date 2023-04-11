@@ -26,7 +26,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
     currentUser = GlobalValue.getCurrentUser;
     print(currentUser!.walletAddress);
     transactions = EthereumRepository()
-        .getTransactionHistoryfromDB(address: currentUser!.walletAddress);
+        .getTransactionHistoryfromDB(address: currentUser!.walletAddress!);
   }
 
   @override

@@ -1,12 +1,12 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/client/user_client.dart';
 import 'package:sac_wallet/exceptions/validation_exception.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/screens/login_page.dart';
 import 'package:sac_wallet/util/keyboard.dart';
-import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../widget/loading.dart';
@@ -55,11 +55,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool validateEmail() {
     if (emailCT.text.isEmpty) {
-      Toast.show("Enter your email",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Enter your email",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       setState(() {
         emailError = "Enter Email Address";
       });
@@ -101,11 +102,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool validatePassword() {
     if (passwordCT.text.isEmpty) {
-      Toast.show("Enter your password",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Enter your password",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       setState(() {
         passwordError = "Enter Password!";
       });
@@ -119,11 +121,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool validateConfPassword() {
     if (passwordCT.text.isEmpty) {
-      Toast.show("Enter your Confirm password",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Enter your Confirm password",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       setState(() {
         passwordError = "Enter Confirm Password!";
       });
@@ -166,28 +169,31 @@ class _RegisterPageState extends State<RegisterPage> {
         !validateConfPassword() &&
         !validatePhoneNumber() &&
         username.isEmpty) {
-      Toast.show("Fill all forms",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Fill all forms",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       return;
     }
     if (!isUserAgreement) {
-      Toast.show("You should agree to User Agreement.",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "You should agree to User Agreement.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       return;
     }
 
     if (password != confPassword) {
-      Toast.show("Password and confirm password do not match.",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Password and confirm password do not match.",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       return;
     }
 
@@ -211,40 +217,44 @@ class _RegisterPageState extends State<RegisterPage> {
         print("Was registration successful ? ${isSuccess}");
 
         if (!isSuccess) {
-          Toast.show("Email or Password already in use",
-              duration: Toast.lengthLong,
-              gravity: Toast.center,
+          Fluttertoast.showToast(
+              msg: "Email or Password already in use",
+              toastLength: Toast.LENGTH_LONG,
+              gravity: ToastGravity.CENTER,
               backgroundColor: Colors.red,
-              textStyle: TextStyle(color: Colors.white));
-          Toast.show("Failed!");
+              textColor: Colors.white);
+          Fluttertoast.showToast(msg: "Failed!");
         } else {
           if (referralCode != null && referralCode.trim() != "") {
             String response = await userRepository.addReferral(
                 referralCode: referralCode, email: email);
 
-            Toast.show("Referral Added! Note: " + response,
-                duration: Toast.lengthLong,
-                gravity: Toast.center,
+            Fluttertoast.showToast(
+                msg: "Referral Added! Note: " + response,
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
                 backgroundColor: Colors.greenAccent,
-                textStyle: TextStyle(color: Colors.black));
+                textColor: Colors.black);
           }
-          Toast.show("Successfully registered!");
+          Fluttertoast.showToast(msg: "Successfully registered!");
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => LoginPage()));
         }
       }
     } on ValidationException catch (e) {
-      Toast.show("Error: ${e.cause}",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Error: ${e.cause}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
     } catch (e) {
-      Toast.show("Error: ${e}",
-          duration: Toast.lengthLong,
-          gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Error: ${e}",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
     } finally {
       setLoading(false);
     }
@@ -255,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Toast.show("Failed to load Terms and agreement");
+      Fluttertoast.showToast(msg: "Failed to load Terms and agreement");
     }
   }
 
@@ -269,7 +279,7 @@ class _RegisterPageState extends State<RegisterPage> {
           print("UserExists ${userExists}");
         });
       }).catchError((err) {
-        Toast.show("Error checking username");
+        Fluttertoast.showToast(msg: "Error checking username");
       });
     }
   }

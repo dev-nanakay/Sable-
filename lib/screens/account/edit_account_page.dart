@@ -2,11 +2,11 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/model/user.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 class EditAccountPage extends StatefulWidget {
   EditAccountPage({Key? key}) : super(key: key);
@@ -36,10 +36,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
     fontSize: 14.0,
   );
 
- final TextStyle inputLabelStyle = TextStyle(
-      color: Colors.black87,
-      fontSize: 12,
-      fontWeight: FontWeight.bold);
+  final TextStyle inputLabelStyle = TextStyle(
+      color: Colors.black87, fontSize: 12, fontWeight: FontWeight.bold);
 
   changeProfile() async {
     String name = nameCT.text;
@@ -93,14 +91,15 @@ class _EditAccountPageState extends State<EditAccountPage> {
         setState(() {
           isLoading = false;
         });
-        Toast.show("Successfully updated!");
+        GlobalValue.setCurrentUser = user;
+        Fluttertoast.showToast(msg: "Successfully updated!");
         Navigator.of(context).pop(true);
       }
     } catch (error) {
       setState(() {
         isLoading = false;
       });
-      Toast.show("Failed!");
+      Fluttertoast.showToast(msg: "Failed!");
       print("Error: $error");
     }
   }
@@ -109,12 +108,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
   void initState() {
     super.initState();
     nameCT.text = user.name;
-    descriptionCT.text = user.description;
-    facebookCT.text = user.facebook_link;
-    twitterCT.text = user.twitter_link;
-    instagramCT.text = user.instagram_link;
-    linkedinCT.text = user.linkedin_link;
-    enabledChat = user.enabledChat;
+    descriptionCT.text = user.description ?? '';
+    facebookCT.text = user.facebook_link ?? '';
+    twitterCT.text = user.twitter_link ?? '';
+    instagramCT.text = user.instagram_link ?? '';
+    linkedinCT.text = user.linkedin_link ?? '';
+    enabledChat = bool.fromEnvironment(user.enabledChat);
     serverImageUrl = user.photo;
   }
 
@@ -150,7 +149,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                  /*  Text(
+                    /*  Text(
                       "PROFILE PICTURE",
                       style: headerStyle,
                     ),
@@ -237,7 +236,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                       "ACCOUNT INFORMATION",
                       style: headerStyle,
                     ),
-                     const SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Card(
                       margin: const EdgeInsets.symmetric(
                         vertical: 8.0,
@@ -250,9 +249,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Name:",
-                                 style: inputLabelStyle),
-                                     
+                            Text("Name:", style: inputLabelStyle),
                             Container(
                               padding: EdgeInsets.only(top: 10),
                               child: TextField(
@@ -265,9 +262,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                               ),
                             ),
                             const SizedBox(height: 16.0),
-                            Text("Country:",
-                               style: inputLabelStyle),
-                                     
+                            Text("Country:", style: inputLabelStyle),
                             Container(
                                 padding: EdgeInsets.only(top: 10),
                                 child: InkWell(
@@ -304,9 +299,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                       )),
                                 )),
                             const SizedBox(height: 16.0),
-                            Text("Decription:",
-                                  style: inputLabelStyle),
-                                    
+                            Text("Decription:", style: inputLabelStyle),
                             Container(
                               padding: EdgeInsets.only(top: 10),
                               child: TextField(
@@ -328,7 +321,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                       "SOCIAL MEDIA INFORMATION",
                       style: headerStyle,
                     ),
-                      const SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Card(
                         margin: const EdgeInsets.symmetric(
                           vertical: 8.0,
@@ -342,8 +335,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text("My Facebook Page:",
-                                   style: inputLabelStyle),
-                                         
+                                    style: inputLabelStyle),
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: TextField(
@@ -357,8 +349,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                 ),
                                 const SizedBox(height: 16.0),
                                 Text("My Instagram Page:",
-                                   style: inputLabelStyle),
-                                         
+                                    style: inputLabelStyle),
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: TextField(
@@ -372,8 +363,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                 ),
                                 const SizedBox(height: 16.0),
                                 Text("My Twitter Page:",
-                                   style: inputLabelStyle),
-                                        
+                                    style: inputLabelStyle),
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: TextField(
@@ -388,7 +378,6 @@ class _EditAccountPageState extends State<EditAccountPage> {
                                 const SizedBox(height: 16.0),
                                 Text("My Linkedin Page:",
                                     style: inputLabelStyle),
-                                         
                                 Container(
                                   padding: EdgeInsets.only(top: 10),
                                   child: TextField(
@@ -451,11 +440,9 @@ class CustomDialog extends StatelessWidget {
         padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 40),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-          ],
+          children: <Widget>[],
         ),
       ),
     );
   }
-
 }

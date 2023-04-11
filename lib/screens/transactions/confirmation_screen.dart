@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/screens/lock_wrapper.dart';
-import 'package:toast/toast.dart';
 
 class ConfirmationScreen extends StatefulWidget {
   final String txHash;
@@ -103,7 +103,8 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                                 ]),
                             onPressed: () {
                               Clipboard.setData(ClipboardData(text: txHash));
-                              Toast.show("Copied to Clipboard");
+                              Fluttertoast.showToast(
+                                  msg: "Copied to Clipboard");
                             },
                           ),
                         )
@@ -195,7 +196,7 @@ class _ConfirmationScreenState extends State<ConfirmationScreen> {
                   //             icon: Icon(Icons.content_copy),
                   //             onPressed: () {
                   //               Clipboard.setData(ClipboardData(text: txHash));
-                  //               Toast.show("Copied", context);
+                  //               Fluttertoast.showToast(msg: "Copied", context);
                   //             },
                   //           )),
                   //     ],

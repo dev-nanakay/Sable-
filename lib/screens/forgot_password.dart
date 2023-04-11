@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/client/user_client.dart';
 import 'package:sac_wallet/exceptions/validation_exception.dart';
@@ -9,7 +9,6 @@ import 'package:sac_wallet/util/keyboard.dart';
 import 'package:sac_wallet/util/time_util.dart';
 import 'package:sac_wallet/util/validator.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 class ForgotPassword extends StatefulWidget {
   final String email;
@@ -90,7 +89,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   void sendOTP() async {
     String emailText = emailCT.text;
     if (emailText == "" || Validator.validateEmail(emailText) != null) {
-      
       print("Invalid email");
       return;
     }
@@ -125,12 +123,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           password: password,
           passwordConfirm: confirmPassword);
 
-      Toast.show("Password reset successful");
+      Fluttertoast.showToast(msg: "Password reset successful");
       Navigator.of(context).pop();
     } on ValidationException catch (e) {
-      Toast.show("Error: ${e.cause}");
+      Fluttertoast.showToast(msg: "Error: ${e.cause}");
     } catch (e) {
-      Toast.show("Server Error: ${e}");
+      Fluttertoast.showToast(msg: "Server Error: ${e}");
     } finally {
       setLoading(false);
     }

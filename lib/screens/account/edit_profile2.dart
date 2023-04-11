@@ -3,11 +3,11 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_picker_cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/model/user.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 class EditAccountPage extends StatefulWidget {
   EditAccountPage({Key? key}) : super(key: key);
@@ -91,7 +91,7 @@ class _EditAccountPageState extends State<EditAccountPage> {
       setState(() {
         isLoading = false;
       });
-      Toast.show("Failed!");
+      Fluttertoast.showToast(msg: "Failed!");
       print("Error: $error");
     }
   }
@@ -100,12 +100,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
   void initState() {
     super.initState();
     nameCT.text = user.name;
-    descriptionCT.text = user.description;
-    facebookCT.text = user.facebook_link;
-    twitterCT.text = user.twitter_link;
-    instagramCT.text = user.instagram_link;
-    linkedinCT.text = user.linkedin_link;
-    enabledChat = user.enabledChat;
+    descriptionCT.text = user.description ?? '';
+    facebookCT.text = user.facebook_link ?? '';
+    twitterCT.text = user.twitter_link ?? '';
+    instagramCT.text = user.instagram_link ?? '';
+    linkedinCT.text = user.linkedin_link ?? '';
+    enabledChat = bool.fromEnvironment(user.enabledChat);
     serverImageUrl = user.photo;
   }
 

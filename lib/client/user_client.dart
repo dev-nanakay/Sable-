@@ -62,9 +62,10 @@ class UserClient {
       final user = resp["user"];
       print(user["phoneNumberVerified"].runtimeType);
       final userAccessToken = resp["userAccessToken"];
+      user['dbid'] = "1";
+      user['userAccessToken'] = userAccessToken;
+      user['enabledChat'] = true;
       User currentUser = User.fromJson(user);
-      currentUser.dbid = "1";
-      currentUser.userAccessToken = userAccessToken;
       await RepositoryServiceUser.addUser(currentUser);
       GlobalValue.setCurrentUser = currentUser;
       print(GlobalValue.getCurrentUser.toString());
@@ -202,13 +203,15 @@ class UserClient {
   }
 
   Future<bool> getOTP() async {
-    User? currentUser = await UserRepository().getUser() ;
+    User? currentUser = await UserRepository().getUser();
 
     Map<String, String> requestBody = {"phoneNumber": currentUser!.phoneNumber};
-
+    print("object!:::::::$requestBody");
     ResponseMap response = await APIRequestHelper().doPostRequest(
         ApiConfig.getConfig().GET_OTP!, json.encode(requestBody),
-        authToken: currentUser!.userAccessToken);
+        authToken: currentUser.userAccessToken);
+    print("object:::::::${response.responseCode}");
+    print("object:::::::${response.body}");
 
     if (response.responseCode == 200) {
       if (response.body != null) {
@@ -244,8 +247,8 @@ class UserClient {
   Future<String> checkReferralCode({required String referralCode}) async {
     var requestBody = {"referralCode": referralCode};
 
-    http.Response response = await http.post(Uri.parse(
-        ApiConfig.getConfig().CHECK_REFERRAL_CODE!.toLowerCase()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().CHECK_REFERRAL_CODE!.toLowerCase()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "",
@@ -267,7 +270,8 @@ class UserClient {
       {required String referralCode, required String email}) async {
     var requestBody = {"toemail": email, "referralCode": referralCode};
 
-    http.Response response = await http.post(Uri.parse(ApiConfig.getConfig().ADD_REFERRAL!.toLowerCase()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().ADD_REFERRAL!.toLowerCase()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "",
@@ -287,8 +291,8 @@ class UserClient {
   Future<String> getAllReferral({required String referralCode}) async {
     var requestBody = {"referralCode": referralCode};
 
-    http.Response response = await http.post(Uri.parse(
-        ApiConfig.getConfig().GET_ALL_REFERRAL.toString()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().GET_ALL_REFERRAL.toString()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "",
@@ -312,8 +316,8 @@ class UserClient {
       "toemail": currentUser!.email,
     };
 
-    http.Response response = await http.post(Uri.parse(
-        ApiConfig.getConfig().CHECK_REFERRAL_STATUS.toString()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().CHECK_REFERRAL_STATUS.toString()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "",
@@ -352,8 +356,8 @@ class UserClient {
   Future<List<User>> getUsers() async {
     User? currentUser = await UserRepository().getUser();
     var requestBody = {"email": currentUser!.email};
-    http.Response response = await http.post(Uri.parse(
-        ApiConfig.getConfig().GET_ALL_USERS.toString()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().GET_ALL_USERS.toString()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "Bearer " + currentUser.userAccessToken,
@@ -399,11 +403,12 @@ class UserClient {
     User? currentUser = await UserRepository().getUser();
     List<Business> business = [];
 
-    http.Response response =
-        await http.get(Uri.parse(ApiConfig.getConfig().GET_ALL_BUSINESS.toString()), headers: {
-      "Authorization": "Bearer " + currentUser!.userAccessToken,
-      "Content-Type": "application/json",
-    });
+    http.Response response = await http.get(
+        Uri.parse(ApiConfig.getConfig().GET_ALL_BUSINESS.toString()),
+        headers: {
+          "Authorization": "Bearer " + currentUser!.userAccessToken,
+          "Content-Type": "application/json",
+        });
     print(response);
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
@@ -426,11 +431,12 @@ class UserClient {
     User? currentUser = await UserRepository().getUser();
     List<Business> business = [];
 
-    http.Response response =
-        await http.get(Uri.parse(ApiConfig.getConfig().GET_ALL_BUSINESS.toString()), headers: {
-      "Authorization": "Bearer " + currentUser!.userAccessToken,
-      "Content-Type": "application/json",
-    });
+    http.Response response = await http.get(
+        Uri.parse(ApiConfig.getConfig().GET_ALL_BUSINESS.toString()),
+        headers: {
+          "Authorization": "Bearer " + currentUser!.userAccessToken,
+          "Content-Type": "application/json",
+        });
     print(response);
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
@@ -464,8 +470,9 @@ class UserClient {
     };
     final uri = Uri(queryParameters: queryParameters);
 
-    http.Response response = await http.get(Uri.parse(
-        "${ApiConfig.getConfig().GET_ALL_BUSINESS_NEAR_ME}?${uri.query}"),
+    http.Response response = await http.get(
+        Uri.parse(
+            "${ApiConfig.getConfig().GET_ALL_BUSINESS_NEAR_ME}?${uri.query}"),
         headers: {
           "Authorization": "Bearer " + currentUser!.userAccessToken,
           "Content-Type": "application/json",
@@ -496,11 +503,12 @@ class UserClient {
     final Map<String, String> queryParameters = {"id": userId};
     final uri = Uri(queryParameters: queryParameters);
 
-    http.Response response = await http
-        .get(Uri.parse("${ApiConfig.getConfig().GET_USER_BY_ID}?${uri.query}"), headers: {
-      "Authorization": "Bearer " + currentUser!.userAccessToken,
-      "Content-Type": "application/json",
-    });
+    http.Response response = await http.get(
+        Uri.parse("${ApiConfig.getConfig().GET_USER_BY_ID}?${uri.query}"),
+        headers: {
+          "Authorization": "Bearer " + currentUser!.userAccessToken,
+          "Content-Type": "application/json",
+        });
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
 
@@ -517,11 +525,12 @@ class UserClient {
   Future<List<String>> getCategories() async {
     User? currentUser = await UserRepository().getUser();
 
-    http.Response response =
-        await http.get(Uri.parse(ApiConfig.getConfig().GET_CATEGORIES.toString()), headers: {
-      "Authorization": "Bearer " + currentUser!.userAccessToken,
-      "Content-Type": "application/json",
-    });
+    http.Response response = await http.get(
+        Uri.parse(ApiConfig.getConfig().GET_CATEGORIES.toString()),
+        headers: {
+          "Authorization": "Bearer " + currentUser!.userAccessToken,
+          "Content-Type": "application/json",
+        });
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
 
@@ -562,7 +571,8 @@ class UserClient {
       "foundationYear": business.foundationYear
     };
 
-    http.Response response = await http.post(Uri.parse(ApiConfig.getConfig().ADD_BUSINESS.toString()),
+    http.Response response = await http.post(
+        Uri.parse(ApiConfig.getConfig().ADD_BUSINESS.toString()),
         body: jsonEncode(requestBody),
         headers: {
           "Authorization": "Bearer " + currentUser!.userAccessToken,

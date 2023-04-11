@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   void startTimer() async {
     EthereumRepository()
-        .getBalance(address: currentUser.walletAddress)
+        .getBalance(address: currentUser.walletAddress!)
         .then((value) {
       setState(() {
         currentBalance = value;
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
       _timer = new Timer.periodic(oneSec, (Timer timer) async {
         try {
           String value = await EthereumRepository()
-              .getBalance(address: currentUser.walletAddress);
+              .getBalance(address: currentUser.walletAddress!);
           if (value != currentBalance) {
             setState(() {
               currentBalance = value;
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Container(
                       child: Text(
-                        "S@" + currentUser.username,
+                        "S@${currentUser.username}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

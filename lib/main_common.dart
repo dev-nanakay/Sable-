@@ -10,7 +10,6 @@ import 'package:sac_wallet/screens/pin/verify_pin.dart';
 import 'package:sac_wallet/screens/splash_screen.dart';
 import 'package:sac_wallet/util/database_creator.dart';
 import 'package:sac_wallet/util/global.dart';
-import 'package:toast/toast.dart';
 
 //void main() => runApp(MyApp());
 
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ToastContext().init(context);
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: FutureBuilder<User>(

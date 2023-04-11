@@ -2,12 +2,11 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/util/eth_util.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 import '../pin/create_pin.dart';
 
@@ -17,8 +16,7 @@ class VerifyPhrase extends StatefulWidget {
   VerifyPhrase({Key? key, required this.passphrase}) : super(key: key);
 
   @override
-  State<VerifyPhrase> createState() =>
-      _VerifyPhrasePageState();
+  State<VerifyPhrase> createState() => _VerifyPhrasePageState();
 }
 
 class _MnemonicObject {
@@ -98,13 +96,13 @@ class _VerifyPhrasePageState extends State<VerifyPhrase> {
       setState(() {
         isNextButtonVisible = true;
       });
-      Toast.show("Backup Mnemonic Match!");
+      Fluttertoast.showToast(msg: "Backup Mnemonic Match!");
     } else {
       setState(() {
         enteredPassphraseArray.clear();
         passphraseCT = enteredPassphraseArray.toString();
       });
-      Toast.show("Invalid Mnemonic, please try again.");
+      Fluttertoast.showToast(msg: "Invalid Mnemonic, please try again.");
     }
   }
 
@@ -122,7 +120,7 @@ class _VerifyPhrasePageState extends State<VerifyPhrase> {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CreatePin()));
     } catch (Exception) {
-      Toast.show("An error occurred");
+      Fluttertoast.showToast(msg: "An error occurred");
     } finally {
       setLoading(false);
     }

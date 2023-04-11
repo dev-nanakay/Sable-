@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
@@ -9,7 +10,6 @@ import 'package:sac_wallet/model/location.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/screens/lock_wrapper.dart';
 import 'package:sac_wallet/util/api_config.dart';
-import 'package:toast/toast.dart';
 
 import '../../widget/loading.dart';
 
@@ -99,14 +99,14 @@ class _CreateBusinessPageState extends State<CreateBusinessPage> {
         setState(() {
           isLoading = false;
         });
-        Toast.show("Successfully added your company data");
+        Fluttertoast.showToast(msg: "Successfully added your company data");
         Navigator.of(context).pop();
       }
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      Toast.show("Failed!");
+      Fluttertoast.showToast(msg: "Failed!");
     }
   }
 
@@ -143,7 +143,7 @@ class _CreateBusinessPageState extends State<CreateBusinessPage> {
       mode: _mode,
     ); */
 
-   // displayPrediction(p!, homeScaffoldKey.currentState!);
+    // displayPrediction(p!, homeScaffoldKey.currentState!);
   }
 
   Future<Null> displayPrediction(Prediction p, ScaffoldState scaffold) async {

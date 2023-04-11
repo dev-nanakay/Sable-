@@ -43,7 +43,7 @@ class _TransactionList extends State<TransactionList> {
 
   newTransactionFetcher() async {
     NewTransactions = await EthereumRepository()
-        .getTransactionHistory(address: currentUser.walletAddress);
+        .getTransactionHistory(address: currentUser.walletAddress!);
     transactions = NewTransactions;
     transactionAssigner();
   }

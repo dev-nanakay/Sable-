@@ -102,7 +102,7 @@ class EthUtil {
       message4 = Uint8List.fromList(message4 + message2);
       Uint8List message5 = keccak256(message4);
       MsgSignature signature = sign(
-          message5, hexToBytes(currentUser.privateKey));
+          message5, hexToBytes(currentUser.privateKey!));
 
       obj["signature"] = "0x" +
           padByZero(signature.r.toRadixString(16), 64) +

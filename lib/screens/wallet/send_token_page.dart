@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/screens/lock_wrapper.dart';
 import 'package:sac_wallet/screens/transactions/confirmation_screen.dart';
@@ -7,7 +8,6 @@ import 'package:sac_wallet/screens/user_list.dart';
 import 'package:sac_wallet/util/eth_util.dart';
 import 'package:sac_wallet/util/keyboard.dart';
 import 'package:sac_wallet/util/validator.dart';
-import 'package:toast/toast.dart';
 
 import '../../model/user.dart';
 import '../../util/global.dart';
@@ -59,7 +59,7 @@ class _SendTokenPageState extends State<SendTokenPage> {
       });
     } else {
       setState(() {
-        Toast.show("Invalid Address!!");
+        Fluttertoast.showToast(msg: "Invalid Address!!");
       });
     }
   }
@@ -74,13 +74,13 @@ class _SendTokenPageState extends State<SendTokenPage> {
   void doTransfer() async {
     String amount = amountCT.text.trim();
     if (!Validator.validateAmount(amount)) {
-      Toast.show("Incorrect amount ${amount}");
+      Fluttertoast.showToast(msg: "Incorrect amount ${amount}");
       return;
     }
     String toAddress = toAddressCT.text.trim();
 
     if (!Validator.recipientAddressValidityChecker(toAddress)) {
-      Toast.show("Invalid recipient address: ${toAddress}");
+      Fluttertoast.showToast(msg: "Invalid recipient address: ${toAddress}");
       return;
     }
 
@@ -92,11 +92,12 @@ class _SendTokenPageState extends State<SendTokenPage> {
                 txHash: txHash,
               )));
     } on InsufficientBalanceException {
-      Toast.show("You have insufficient funds for this transaction");
+      Fluttertoast.showToast(
+          msg: "You have insufficient funds for this transaction");
     } on UnExpectedResponseException catch (e) {
-      Toast.show(e.cause);
+      Fluttertoast.showToast(msg: e.cause);
     } catch (e) {
-      Toast.show("Could not process");
+      Fluttertoast.showToast(msg: "Could not process");
     } finally {
       setLoading(false);
     }
@@ -261,7 +262,7 @@ class _SendTokenPageState extends State<SendTokenPage> {
                                 icon: Icon(Icons.contacts),
                                 iconSize: 30,
                                 onPressed: () async {
-                                  String result = await Navigator.of(context)
+                                  String? result = await Navigator.of(context)
                                       .push(MaterialPageRoute(
                                           builder: (context) =>
                                               UserListPage()));

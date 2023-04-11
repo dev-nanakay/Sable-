@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-//import 'package:printing/printing.dart';
+import 'package:printing/printing.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/client/user_client.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
@@ -15,7 +15,6 @@ import 'package:sac_wallet/util/eth_util.dart';
 import 'package:sac_wallet/util/pdf_util.dart';
 import 'package:sac_wallet/util/text_util.dart';
 import 'package:sac_wallet/widget/loading.dart';
-import 'package:toast/toast.dart';
 
 class CreateWallet extends StatefulWidget {
   final String passphrase;
@@ -70,11 +69,11 @@ class _CreateWalletPageState extends State<CreateWallet> {
       setLoading(true);
 
       pw.Document pdf = PdfUtil.generatePDF(mnemonicText!);
-      /* await Printing.layoutPdf(
-          onLayout: (PdfPageFormat format) async => pdf.save()); */
-      Toast.show("Generating PDF");
+      await Printing.layoutPdf(
+          onLayout: (PdfPageFormat format) async => pdf.save());
+      Fluttertoast.showToast(msg: "Generating PDF");
     } catch (Exception) {
-      Toast.show("Error occurred while generating PDF");
+      Fluttertoast.showToast(msg: "Error occurred while generating PDF");
     } finally {
       setLoading(false);
     }
@@ -99,7 +98,7 @@ class _CreateWalletPageState extends State<CreateWallet> {
           attachments: [tempPath]);
       await FlutterMailer.send(mailOptions);
     } catch (Exception) {
-      Toast.show("Error occurred while sharing");
+      Fluttertoast.showToast(msg: "Error occurred while sharing");
     } finally {
       setLoading(false);
     }
@@ -123,7 +122,7 @@ class _CreateWalletPageState extends State<CreateWallet> {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CreatePin()));
     } catch (Exception) {
-      Toast.show("An error occurred");
+      Fluttertoast.showToast(msg: "An error occurred");
     } finally {
       setLoading(false);
     }

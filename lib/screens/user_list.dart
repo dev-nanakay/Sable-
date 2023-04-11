@@ -73,7 +73,7 @@ class UserListPageState extends State<UserListPage> {
                           u.email
                               .toLowerCase()
                               .contains(string.toLowerCase()) ||
-                          u.walletAddress
+                          u.walletAddress!
                               .toLowerCase()
                               .contains(string.toLowerCase())))
                       .toList();
@@ -112,7 +112,7 @@ class UserListPageState extends State<UserListPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "S@" + filteredUsers[index].username,
+                                  "S@${filteredUsers[index].username}",
                                   style: TextStyle(
                                       fontSize: 16.0,
                                       color: Colors.black,

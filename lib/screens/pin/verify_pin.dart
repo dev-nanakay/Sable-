@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/model/user.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/screens/pin/constants.dart';
 import 'package:sac_wallet/util/time_util.dart';
-import 'package:toast/toast.dart';
 
 import '../dashboard_page.dart';
 
@@ -61,6 +61,7 @@ class _VerifyPinPageState extends State<VerifyPin> {
     super.initState();
     pin = "";
     pinArray = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', '-1'];
+    onDone = widget.onDone;
     UserRepository().getUser().then((value) {
       currentUser = value;
 
@@ -68,19 +69,21 @@ class _VerifyPinPageState extends State<VerifyPin> {
 
       int lastAttemptTime;
       if (currentUser!.incorrectAttemptsTime != null)
-        lastAttemptTime = int.tryParse(currentUser!.incorrectAttemptsTime) ?? 0;
+        lastAttemptTime =
+            int.tryParse(currentUser!.incorrectAttemptsTime!) ?? 0;
       else {
         lastAttemptTime = 0;
       }
       int delta = currentTime - lastAttemptTime;
       if (value!.incorrectAttempts == null) value.incorrectAttempts = "0";
-      if (int.tryParse(value.incorrectAttempts)! >=
+      if (int.tryParse(value.incorrectAttempts!)! >=
               PinConstants.ALLOWED_ATTEMPTS &&
           delta < PinConstants.RETRY_INTERVAL) {
         print("Delta");
         print((PinConstants.RETRY_INTERVAL - delta));
-        Toast.show(
-            "Your wallet is locked for ${getRemainingTimeInMinutes(delta)} minutes since last attempt, try again later");
+        Fluttertoast.showToast(
+            msg:
+                "Your wallet is locked for ${getRemainingTimeInMinutes(delta)} minutes since last attempt, try again later");
         if (_timer == null || !_timer!.isActive) {
           startTimer(((PinConstants.RETRY_INTERVAL - delta) / 1000).ceil());
         }
@@ -105,8 +108,11 @@ class _VerifyPinPageState extends State<VerifyPin> {
     if (pin.length == PIN_LENGTH) {
       bool wasSame = await userRepository.verifyPin(pin: pin);
       if (wasSame) {
+        print("PIN Verified");
+        print("PIN:::::$onDone");
         // Pin verified
         if (onDone == "MAIN") {
+        print("PIN Verified:::::");
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => DashboardPage(),
@@ -119,9 +125,9 @@ class _VerifyPinPageState extends State<VerifyPin> {
         // update attempts
         await userRepository.incrementIncorrectAttempt();
         // Login Failure
-        Toast.show(
-            "Invalid Pin. \n"
-            "You have ${PinConstants.ALLOWED_ATTEMPTS - currentAttempts} attempts remaining");
+        Fluttertoast.showToast(
+            msg: "Invalid Pin. \n"
+                "You have ${PinConstants.ALLOWED_ATTEMPTS - currentAttempts} attempts remaining");
         setState(() {
           pin = "";
         });
@@ -138,14 +144,14 @@ class _VerifyPinPageState extends State<VerifyPin> {
     currentUser = await userRepository.getUser();
     int currentAttempts = 0;
     if (currentUser!.incorrectAttempts != null)
-      currentAttempts = int.tryParse(currentUser!.incorrectAttempts) ?? 0;
+      currentAttempts = int.tryParse(currentUser!.incorrectAttempts!) ?? 0;
 
     if (currentAttempts < PinConstants.ALLOWED_ATTEMPTS) {
       loginIfPinCorrect(currentAttempts);
     } else {
       int currentTime = DateTime.now().millisecondsSinceEpoch;
 
-      int lastAttemptTime = int.tryParse(currentUser!.incorrectAttemptsTime)!;
+      int lastAttemptTime = int.tryParse(currentUser!.incorrectAttemptsTime!)!;
 
       int delta = currentTime - lastAttemptTime;
       if (currentAttempts + 1 == PinConstants.ALLOWED_ATTEMPTS &&
@@ -153,8 +159,9 @@ class _VerifyPinPageState extends State<VerifyPin> {
         startTimer(((PinConstants.RETRY_INTERVAL - delta) / 1000).ceil());
       }
       if (delta < PinConstants.RETRY_INTERVAL) {
-        Toast.show(
-            "Your wallet is locked for ${TimeUtil.getMinutesSeconds(((PinConstants.RETRY_INTERVAL - delta) / 1000).ceil())} minutes since last attempt, try again later");
+        Fluttertoast.showToast(
+            msg:
+                "Your wallet is locked for ${TimeUtil.getMinutesSeconds(((PinConstants.RETRY_INTERVAL - delta) / 1000).ceil())} minutes since last attempt, try again later");
         if (_timer != null || !_timer!.isActive) {
           startTimer(((PinConstants.RETRY_INTERVAL - delta) / 1000).ceil());
         }

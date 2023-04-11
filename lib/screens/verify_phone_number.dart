@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/model/user.dart';
 import 'package:sac_wallet/repository/user_repository.dart';
 import 'package:sac_wallet/screens/create_import_wallet.dart';
 import 'package:sac_wallet/util/global.dart';
 import 'package:sac_wallet/util/keyboard.dart';
-import 'package:toast/toast.dart';
 
 import '../widget/loading.dart';
 
@@ -31,20 +31,22 @@ class _VerifyPhoneNumberPageState extends State<VerifyPhoneNumberPage> {
       if (isSuccess) {
         setLoading(true);
 
-        Toast.show("Verification Code Sent!",
-            duration: Toast.lengthLong,
-            gravity: Toast.center,
+        Fluttertoast.showToast(
+            msg: "Verification Code Sent!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
             backgroundColor: Colors.greenAccent,
-            textStyle: TextStyle(color: Colors.black));
+            textColor: Colors.black);
       } else {
         throw new Exception("Failed");
       }
     } catch (e) {
-      Toast.show("Verification Code Send Failed!",
-          duration: Toast.lengthLong,
-            gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Verification Code Send Failed!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
     } finally {
       setLoading(false);
     }
@@ -53,11 +55,12 @@ class _VerifyPhoneNumberPageState extends State<VerifyPhoneNumberPage> {
   verifyPhoneNumber() async {
     String otp = otpCT.text;
     if (otp.isEmpty) {
-      Toast.show("Enter your Verification Code",
-          duration: Toast.lengthLong,
-            gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Enter your Verification Code",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
       return;
     }
 
@@ -77,11 +80,12 @@ class _VerifyPhoneNumberPageState extends State<VerifyPhoneNumberPage> {
         throw new Exception("Network failed");
       }
     } catch (e) {
-      Toast.show("Code verification Failed!",
-          duration: Toast.lengthLong,
-            gravity: Toast.center,
+      Fluttertoast.showToast(
+          msg: "Code verification Failed!",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
-          textStyle: TextStyle(color: Colors.white));
+          textColor: Colors.white);
     } finally {
       setLoading(false);
     }

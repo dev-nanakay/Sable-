@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:sac_wallet/screens/main_page.dart';
 import 'package:sac_wallet/screens/verify_phone_number.dart';
-import 'package:toast/toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -37,7 +35,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      Toast.show("Failed to load Terms and agreement");
+      Fluttertoast.showToast(msg: "Failed to load Terms and agreement");
     }
   }
 
@@ -140,7 +138,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         ),
       ],
       onDone: () => _onIntroEnd(context),
-      //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
+      onSkip: () => _onIntroEnd(context), // You can override onSkip callback
       showSkipButton: true,
       //skipFlex: 0,
       nextFlex: 0,

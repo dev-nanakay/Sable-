@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr/qr.dart';
 //import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sac_wallet/Constants/AppColor.dart';
 import 'package:sac_wallet/screens/lock_wrapper.dart';
-import 'package:toast/toast.dart';
 
 import '../../model/user.dart';
 import '../../util/global.dart';
@@ -34,12 +34,12 @@ class _BuyTokenPageState extends State<BuyTokenPage> {
     String purchaseUnit = unitCT.text;
 
     if (purchaseUnit.isEmpty) {
-      Toast.show("Enter unit for purchase");
+      Fluttertoast.showToast(msg: "Enter unit for purchase");
       return;
     }
 
     if (!isApprovedTransaction) {
-      Toast.show("Confirm approval of this transaction!");
+      Fluttertoast.showToast(msg: "Confirm approval of this transaction!");
       return;
     }
 
@@ -55,7 +55,7 @@ class _BuyTokenPageState extends State<BuyTokenPage> {
   void copyAddress() {
     // copy the address
     Clipboard.setData(ClipboardData(text: currentUser.walletAddress));
-    Toast.show("Copied to clipboard!");
+    Fluttertoast.showToast(msg: "Copied to clipboard!");
   }
 
   void clickOnDone() {
@@ -245,11 +245,11 @@ class _BuyTokenPageState extends State<BuyTokenPage> {
                     Center(
                       child: Container(
                         child: Card(
-                         /*  child: QrImage(
+                            /*  child: QrImage(
                             data: currentUser.walletAddress,
                             size: 250,
                           ), */
-                        ),
+                            ),
                       ),
                     ),
                     Text('Ask your friend to scan QR code to transfer',
@@ -283,7 +283,7 @@ class _BuyTokenPageState extends State<BuyTokenPage> {
                             children: <Widget>[
                               Expanded(
                                   flex: 90,
-                                  child: Text(currentUser.walletAddress,
+                                  child: Text(currentUser.walletAddress ?? '',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
